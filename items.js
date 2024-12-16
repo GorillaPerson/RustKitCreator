@@ -1,4 +1,4 @@
-export const items = [
+const items = [
   { shortName: "abovegroundpool", displayName: "Above Ground Pool" },
   { shortName: "ammo.grenadelauncher.buckshot", displayName: "40mm Shotgun Round" },
   { shortName: "ammo.grenadelauncher.he", displayName: "40mm HE Grenade" },
