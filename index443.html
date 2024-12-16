@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rust Kit Command Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #1e1e1e; /* Dark Grey Background */
+      color: #ffffff; /* White Text */
+      line-height: 1.5;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #2c2c2c; /* Slightly lighter grey for form container */
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, button, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+      box-sizing: border-box;
+    }
+    input::placeholder {
+      color: #bbbbbb;
+    }
+    button {
+      background-color: #444;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #555;
+    }
+    .dropdown {
+      position: relative;
+      margin-bottom: 15px;
+    }
+    .dropdown input {
+      width: 100%;
+    }
+    .dropdown .dropdown-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      max-height: 150px;
+      overflow-y: auto;
+      background-color: #2c2c2c;
+      border: 1px solid #555;
+      border-radius: 5px;
+      z-index: 1000;
+      display: none;
+    }
+    .dropdown .dropdown-list .dropdown-item {
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+    }
+    .dropdown .dropdown-list .dropdown-item img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+    .dropdown .dropdown-list .dropdown-item:hover {
+      background-color: #444;
+    }
+    .command-list {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      background-color: #2c2c2c;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .command-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+    }
+    .command-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .command-item button {
+      width: auto;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .command-item button.copy {
+      background-color: #4466aa;
+    }
+    .command-item button.copy:hover {
+      background-color: #5588cc;
+    }
+    .command-item button.edit {
+      background-color: #44aa44;
+    }
+    .command-item button.edit:hover {
+      background-color: #55cc55;
+    }
+    .command-item button.remove {
+      background-color: #aa4444;
+    }
+    .command-item button.remove:hover {
+      background-color: #cc5555;
+    }
+    .copy-all {
+      display: block;
+      margin: 20px auto;
+      padding: 10px;
+      background-color: #4466aa;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: fit-content;
+    }
+    .copy-all:hover {
+      background-color: #5588cc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rust Kit Command Generator</h1>
+  <div class="form-container">
+    <form id="kitForm">
+      <label for="kitName">Kit Name:</label>
+      <input type="text" id="kitName" placeholder="Enter kit name" required>
+
+      <label for="item">Item:</label>
+      <div class="dropdown">
+        <input type="text" id="itemInput" placeholder="Search and select an item">
+        <div class="dropdown-list" id="itemDropdown">
+          <div class="dropdown-item" data-value="ammo.pistol">
+            <img src="https://gorillaperson.github.io/WaxKitCreator/images/ammo.pistol.png" alt="Ammo - Pistol">
+            Ammo - Pistol
+          </div>
+          <div class="dropdown-item" data-value="wood">
+            <img src="https://gorillaperson.github.io/WaxKitCreator/images/wood.png" alt="Wood">
+            Wood
+          </div>
+          <div class="dropdown-item" data-value="metal.fragments">
+            <img src="https://gorillaperson.github.io/WaxKitCreator/images/metal.fragments.png" alt="Metal Fragments">
+            Metal Fragments
+          </div>
+          <div class="dropdown-item" data-value="rifle.ak">
+            <img src="https://gorillaperson.github.io/WaxKitCreator/images/rifle.ak.png" alt="Rifle - AK">
+            Rifle - AK
+          </div>
+          <div class="dropdown-item" data-value="grenade.beancan">
+            <img src="https://gorillaperson.github.io/WaxKitCreator/images/grenade.beancan.png" alt="Grenade - Beancan">
+            Grenade - Beancan
+          </div>
+        </div>
+      </div>
+ 
+
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" placeholder="Enter amount" required>
+
+      <label for="condition">Condition (0-1):</label>
+      <input type="number" id="condition" placeholder="Enter condition (0-1)" min="0" max="1" step="0.01" required>
+
+      <label for="container">Container:</label>
+      <select id="container">
+        <option value="belt">Belt</option>
+        <option value="main">Main Inventory</option>
+        <option value="wear">Wear</option>
+      </select>
+
+      <button type="button" id="addBtn">Add Command</button>
+    </form>
+  </div>
+
+  <div class="command-list" id="commandList">
+    <h2>Command List</h2>
+    <p id="emptyMessage">No commands added yet.</p>
+  </div>
+
+  <button class="copy-all" id="copyAllBtn">Copy All Commands</button>
+
+  <script>
+    const addBtn = document.getElementById('addBtn');
+    const commandList = document.getElementById('commandList');
+    const emptyMessage = document.getElementById('emptyMessage');
+    const copyAllBtn = document.getElementById('copyAllBtn');
+    const itemInput = document.getElementById('itemInput');
+    const itemDropdown = document.getElementById('itemDropdown');
+
+    const clearEmptyMessage = () => {
+      emptyMessage.style.display = 'none';
+    };
+
+    const showEmptyMessage = () => {
+      if (commandList.querySelectorAll('.command-item').length === 0) {
+        emptyMessage.style.display = 'block';
+      }
+    };
+
+    const createCommandElement = (command, item) => {
+      const commandItem = document.createElement('div');
+      commandItem.className = 'command-item';
+
+      const commandText = document.createElement('span');
+      commandText.textContent = command;
+      commandText.className = 'command-text';
+
+      // Add item image dynamically using the short item name
+      const itemImage = document.createElement('img');
+      itemImage.src = `https://gorillaperson.github.io/WaxKitCreator/images/${item}.png`;
+      itemImage.alt = item;
+      itemImage.style.width = '30px';
+      itemImage.style.height = '30px';
+      itemImage.style.marginRight = '10px';
+
+      // Action Buttons
+      const actions = document.createElement('div');
+      actions.className = 'command-actions';
+
+      const copyBtn = document.createElement('button');
+      copyBtn.textContent = 'Copy';
+      copyBtn.className = 'copy';
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(command);
+        alert('Command copied to clipboard!');
+      });
+
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'Remove';
+      removeBtn.className = 'remove';
+      removeBtn.addEventListener('click', () => {
+        commandItem.remove();
+        showEmptyMessage();
+      });
+
+      actions.appendChild(copyBtn);
+      actions.appendChild(removeBtn);
+      commandItem.appendChild(itemImage);
+      commandItem.appendChild(commandText);
+      commandItem.appendChild(actions);
+
+      return commandItem;
+    };
+
+    addBtn.addEventListener('click', () => {
+      const kitName = document.getElementById('kitName').value.trim();
+      const item = itemInput.dataset.selectedValue;
+      const amount = document.getElementById('amount').value;
+      const condition = document.getElementById('condition').value;
+      const container = document.getElementById('container').value;
+
+      if (!kitName || !item || !amount || condition === '') {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const command = `kit add ${kitName} ${item} ${amount} ${condition} ${container}`;
+      clearEmptyMessage();
+
+      const commandElement = createCommandElement(command, item);
+      commandList.appendChild(commandElement);
+      showEmptyMessage();
+    });
+
+    copyAllBtn.addEventListener('click', () => {
+      const commands = Array.from(document.querySelectorAll('.command-text')).map(el => el.textContent).join('\n');
+      if (commands) {
+        navigator.clipboard.writeText(commands);
+        alert('All commands copied to clipboard!');
+      } else {
+        alert('No commands to copy.');
+      }
+    });
+
+    // Filter items in the dropdown
+    itemInput.addEventListener('input', () => {
+      const filter = itemInput.value.toLowerCase();
+      const options = Array.from(itemDropdown.querySelectorAll('.dropdown-item'));
+      let anyVisible = false;
+      options.forEach(option => {
+        if (option.textContent.toLowerCase().includes(filter)) {
+          option.style.display = '';
+          anyVisible = true;
+        } else {
+          option.style.display = 'none';
+        }
+      });
+      itemDropdown.style.display = anyVisible ? 'block' : 'none';
+    });
+
+    // Select item from the dropdown
+    itemDropdown.addEventListener('click', (e) => {
+      if (e.target.classList.contains('dropdown-item')) {
+        itemInput.value = e.target.textContent.trim();  // Remove extra spaces
+        itemInput.dataset.selectedValue = e.target.dataset.value;
+        itemDropdown.style.display = 'none';
+      }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.dropdown')) {
+        itemDropdown.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
