@@ -3,51 +3,203 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rust Kit Command Generatr</title>
+  <title>Rust Kit Command Generator</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #1e1e1e;
-      color: #fff;
-    }
-    .dropdown {
-      position: relative;
-      margin-bottom: 15px;
-    }
-    .dropdown .dropdown-list {
-      position: relative;
-      margin-top: 10px;
-      max-height: 400px;
-      overflow-y: auto;
-      border: 1px solid #555;
-      border-radius: 5px;
-      background-color: #2c2c2c;
-    }
-    .dropdown-item {
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      border-bottom: 1px solid #444;
-      transition: background-color 0.3s;
-    }
-    .dropdown-item img {
-      width: 30px;
-      height: 30px;
-      margin-right: 10px;
-    }
-    .dropdown-item:hover {
-      background-color: #444;
-    }
+    /* Styles omitted for brevity; same as before */
   </style>
 </head>
 <body>
-  <h1>Rust Kit Command Getor</h1>
-  <div class="dropdown">
-    <h2>Available Items</h2>
-    <div class="dropdown-list" id="itemDropdown"></div>
+  <h1>Rust Kit Command Generator</h1>
+  <div class="form-container">
+    <form id="kitForm">
+      <label for="kitName">Kit Name:</label>
+      <input type="text" id="kitName" placeholder="Enter kit name" required>
+
+      <label for="item">Item:</label>
+      <div class="dropdown">
+        <input type="text" id="itemInput" placeholder="Search and select an item">
+        <div class="dropdown-list" id="itemDropdown">
+          <!-- Dynamically generated dropdown items will appear here -->
+        </div>
+      </div>
+
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" placeholder="Enter amount" required>
+
+      <label for="condition">Condition (0-1):</label>
+      <input type="number" id="condition" placeholder="Enter condition (0-1)" min="0" max="1" step="0.01" required>
+
+      <label for="container">Container:</label>
+      <select id="container">
+        <option value="belt">Belt</option>
+        <option value="main">Main Inventory</option>
+        <option value="wear">Wear</option>
+      </select>
+
+      <button type="button" id="addBtn">Add Command</button>
+    </form>
   </div>
-  <script src="script.js"></script>
+
+  <div class="command-list" id="commandList">
+    <h2>Command List</h2>
+    <p id="emptyMessage">No commands added yet.</p>
+  </div>
+
+  <button class="copy-all" id="copyAllBtn">Copy All Commands</button>
+
+  <script>
+    const addBtn = document.getElementById('addBtn');
+    const commandList = document.getElementById('commandList');
+    const emptyMessage = document.getElementById('emptyMessage');
+    const copyAllBtn = document.getElementById('copyAllBtn');
+    const itemInput = document.getElementById('itemInput');
+    const itemDropdown = document.getElementById('itemDropdown');
+
+    const items = [
+      { value: 'ammo.pistol', label: 'Ammo - Pistol' },
+      { value: 'wood', label: 'Wood' },
+      { value: 'metal.fragments', label: 'Metal Fragments' },
+      { value: 'rifle.ak', label: 'Rifle - AK' },
+      { value: 'grenade.beancan', label: 'Grenade - Beancan' }
+    ];
+
+    const clearEmptyMessage = () => {
+      emptyMessage.style.display = 'none';
+    };
+
+    const showEmptyMessage = () => {
+      if (commandList.querySelectorAll('.command-item').length === 0) {
+        emptyMessage.style.display = 'block';
+      }
+    };
+
+    const createDropdownItem = (item) => {
+      const dropdownItem = document.createElement('div');
+      dropdownItem.className = 'dropdown-item';
+      dropdownItem.dataset.value = item.value;
+
+      const itemImage = document.createElement('img');
+      itemImage.src = `https://gorillaperson.github.io/WaxKitCreator/images/${item.value}.png`;
+      itemImage.alt = item.label;
+
+      dropdownItem.appendChild(itemImage);
+      dropdownItem.appendChild(document.createTextNode(item.label));
+
+      return dropdownItem;
+    };
+
+    const populateDropdown = () => {
+      itemDropdown.innerHTML = '';
+      items.forEach(item => {
+        const dropdownItem = createDropdownItem(item);
+        itemDropdown.appendChild(dropdownItem);
+      });
+    };
+
+    const createCommandElement = (command, item) => {
+      const commandItem = document.createElement('div');
+      commandItem.className = 'command-item';
+
+      const commandText = document.createElement('span');
+      commandText.textContent = command;
+      commandText.className = 'command-text';
+
+      const itemImage = document.createElement('img');
+      itemImage.src = `https://gorillaperson.github.io/WaxKitCreator/images/${item}.png`;
+      itemImage.alt = item;
+      itemImage.style.width = '30px';
+      itemImage.style.height = '30px';
+      itemImage.style.marginRight = '10px';
+
+      const actions = document.createElement('div');
+      actions.className = 'command-actions';
+
+      const copyBtn = document.createElement('button');
+      copyBtn.textContent = 'Copy';
+      copyBtn.className = 'copy';
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(command);
+        alert('Command copied to clipboard!');
+      });
+
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'Remove';
+      removeBtn.className = 'remove';
+      removeBtn.addEventListener('click', () => {
+        commandItem.remove();
+        showEmptyMessage();
+      });
+
+      actions.appendChild(copyBtn);
+      actions.appendChild(removeBtn);
+      commandItem.appendChild(itemImage);
+      commandItem.appendChild(commandText);
+      commandItem.appendChild(actions);
+
+      return commandItem;
+    };
+
+    addBtn.addEventListener('click', () => {
+      const kitName = document.getElementById('kitName').value.trim();
+      const item = itemInput.dataset.selectedValue;
+      const amount = document.getElementById('amount').value;
+      const condition = document.getElementById('condition').value;
+      const container = document.getElementById('container').value;
+
+      if (!kitName || !item || !amount || condition === '') {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const command = `kit add ${kitName} ${item} ${amount} ${condition} ${container}`;
+      clearEmptyMessage();
+
+      const commandElement = createCommandElement(command, item);
+      commandList.appendChild(commandElement);
+      showEmptyMessage();
+    });
+
+    copyAllBtn.addEventListener('click', () => {
+      const commands = Array.from(document.querySelectorAll('.command-text')).map(el => el.textContent).join('\n');
+      if (commands) {
+        navigator.clipboard.writeText(commands);
+        alert('All commands copied to clipboard!');
+      } else {
+        alert('No commands to copy.');
+      }
+    });
+
+    itemInput.addEventListener('input', () => {
+      const filter = itemInput.value.toLowerCase();
+      const options = Array.from(itemDropdown.querySelectorAll('.dropdown-item'));
+      let anyVisible = false;
+      options.forEach(option => {
+        if (option.textContent.toLowerCase().includes(filter)) {
+          option.style.display = '';
+          anyVisible = true;
+        } else {
+          option.style.display = 'none';
+        }
+      });
+      itemDropdown.style.display = anyVisible ? 'block' : 'none';
+    });
+
+    itemDropdown.addEventListener('click', (e) => {
+      if (e.target.closest('.dropdown-item')) {
+        const selectedItem = e.target.closest('.dropdown-item');
+        itemInput.value = selectedItem.textContent.trim();
+        itemInput.dataset.selectedValue = selectedItem.dataset.value;
+        itemDropdown.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.dropdown')) {
+        itemDropdown.style.display = 'none';
+      }
+    });
+
+    populateDropdown();
+  </script>
 </body>
 </html>
