@@ -1,6 +1,6 @@
 // items.js
 // main.js (or whatever your main JS file is)
-import { items } from itemlist.js;
+import { items } from './itemlist.js';
 
 // Now you can use the 'items' array here
 console.log(items);
