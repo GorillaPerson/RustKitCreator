@@ -29,7 +29,7 @@ items.forEach(item => {
   itemDiv.className = "dropdown-item";
   itemDiv.setAttribute("data-value", item);
   itemDiv.innerHTML = `
-    <img src="https://gorillaperson.github.io/RustKitCreator/images/${item}.png" alt="${itemName}">
+    <img src="https://gorillaperson.github.io/WaxKitCreator/images/${item}.png" alt="${itemName}">
     ${itemName}
   `;
   itemDropdown.appendChild(itemDiv);
