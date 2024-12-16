@@ -718,42 +718,5 @@ export const items = [
   { shortName: "xylophone", displayName: "Xylobone" },
   { shortName: "yellow.berry", displayName: "Yellow Berry" },
 ];
-// items.js
 
-// Generate a buffer for each item dynamically
-export function createItemBuffers(items) {
-  return items.map(item => ({
-    ...item,
-    buffer: new ArrayBuffer(8),  // Dynamically create an ArrayBuffer for each item
-  }));
-}
-
-// buffer.js
-// You can still use the previous buffer manipulation functions if needed
-export function fillBuffer(itemIndex, value, items) {
-  const item = items[itemIndex];
-  const uint8View = new Uint8Array(item.buffer);
-  uint8View[0] = value;  // Modify buffer data as needed
-  return item.buffer;
-}
-
-// main.js
-import { items, createItemBuffers } from './items.js';
-import { fillBuffer } from './buffer.js';
-
-// Create buffers for all items dynamically
-const itemsWithBuffers = createItemBuffers(items);
-
-// Example: Accessing and manipulating a specific item's buffer
-const firstItemBuffer = itemsWithBuffers[0].buffer;
-console.log(itemsWithBuffers[0].displayName); // Output: Item One
-console.log(new Uint8Array(firstItemBuffer)[0]); // Output: 0 (initial value)
-
-fillBuffer(0, 42, itemsWithBuffers); // Modify the buffer for the first item
-console.log(new Uint8Array(firstItemBuffer)[0]); // Output: 42 (after modification)
-
-// Iterate over all items and print their details and buffer data
-itemsWithBuffers.forEach((item, index) => {
-  console.log(`${item.displayName}: ${new Uint8Array(item.buffer)[0]}`);
-});
 
