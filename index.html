@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rust Kit Command Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #1e1e1e;
+      color: #fff;
+    }
+    .dropdown {
+      position: relative;
+      margin-bottom: 15px;
+    }
+    .dropdown .dropdown-list {
+      position: relative;
+      margin-top: 10px;
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #555;
+      border-radius: 5px;
+      background-color: #2c2c2c;
+    }
+    .dropdown-item {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid #444;
+      transition: background-color 0.3s;
+    }
+    .dropdown-item img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+    .dropdown-item:hover {
+      background-color: #444;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rust Kit Command Generator</h1>
+  <div class="dropdown">
+    <h2>Available Items</h2>
+    <div class="dropdown-list" id="itemDropdown"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
