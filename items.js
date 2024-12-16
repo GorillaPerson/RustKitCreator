@@ -17,7 +17,7 @@ const buildDropdown = () => {
     dropdownItem.className = 'dropdown-item';
     dropdownItem.dataset.value = item.shortName;
     dropdownItem.innerHTML = `
-      <img src="https://gorillaperson.github.io/WaxKitCreator/images/${item.shortName}.png" alt="${item.displayName}">
+      <img src="https://wiki.rustclash.com/img/items180/${item.shortName}.png" alt="${item.displayName}">
       ${item.displayName}
     `;
     itemDropdown.appendChild(dropdownItem);
