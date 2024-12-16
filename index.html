@@ -163,8 +163,7 @@
         <input type="text" id="itemInput" placeholder="Search and select an item">
         <div class="dropdown-list" id="itemDropdown"></div>
       </div>
-      <script src="script.js"></script>
-  
+
       <label for="amount">Amount:</label>
       <input type="number" id="amount" placeholder="Enter amount" required>
 
@@ -189,6 +188,7 @@
 
   <button class="copy-all" id="copyAllBtn">Copy All Commands</button>
 
+  <script src="items.js"></script>
   <script>
     const addBtn = document.getElementById('addBtn');
     const commandList = document.getElementById('commandList');
@@ -300,9 +300,10 @@
 
     // Select item from the dropdown
     itemDropdown.addEventListener('click', (e) => {
-      if (e.target.classList.contains('dropdown-item')) {
-        itemInput.value = e.target.textContent.trim();  // Remove extra spaces
-        itemInput.dataset.selectedValue = e.target.dataset.value;
+      if (e.target.closest('.dropdown-item')) {
+        const selectedItem = e.target.closest('.dropdown-item');
+        itemInput.value = selectedItem.textContent.trim();  // Remove extra spaces
+        itemInput.dataset.selectedValue = selectedItem.dataset.value;
         itemDropdown.style.display = 'none';
       }
     });
