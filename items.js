@@ -37,17 +37,9 @@ const buildDropdown = () => {
     dropdownItem.innerHTML = `
       <img src="${imageUrl}" alt="${item.displayName}">
       ${item.displayName}
-     
     `;
     itemDropdown.appendChild(dropdownItem);
   });
-};
-
-// Toggle image between dynamic and static
-const toggleImage = (index) => {
-  const item = items[index];
-  item.showImage = !item.showImage; // Toggle the showImage value
-  buildDropdown(); // Rebuild the dropdown to reflect the change
 };
 
 // Call the function to build the dropdown when the script is loaded
