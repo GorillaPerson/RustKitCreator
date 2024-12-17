@@ -1,4 +1,5 @@
 const items = [
+{ shortName: "electric.generator.small", displayName: "Test Generator",showImage: true },
 { shortName: "ammo.grenadelauncher.buckshot", displayName: "40mm Shotgun Round",showImage: true },
 { shortName: "ammo.grenadelauncher.he", displayName: "40mm HE Grenade",showImage: true },
 { shortName: "ammo.grenadelauncher.smoke", displayName: "40mm Smoke Grenade",showImage: true },
