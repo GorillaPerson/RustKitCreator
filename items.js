@@ -8,54 +8,35 @@ const items = [
 ];
 
 // Function to determine and set the image source
-function getImageBasedOnCondition(item) {
-  if (item.showImage === true) {
-    // Use the dynamic image URL
-    return `https://wiki.rustclash.com/img/items180/${item.shortName}.png`;
+console.log(items);
+
+// Function to determine the image source based on `showImage`
+const getImageSource = (item) => {
+  if (item.showImage) {
+    return `https://raw.githubusercontent.com/GorillaPerson/Rust-items-images/refs/heads/main/items/${item.shortName}.png`;
   } else {
-    // Use a static fallback image
     return "https://example.com/staticFallbackImage.png"; // Replace with your fallback image URL
   }
-}
+};
 
-// Function to render all items and their images on the page
-function renderItems() {
-  const container = document.getElementById("itemsContainer");
+// Dynamically build the dropdown list
+const buildDropdown = () => {
+  const itemDropdown = document.getElementById('itemDropdown');
+  itemDropdown.innerHTML = ''; // Clear previous items
 
-  if (!container) {
-    console.error("Container element with ID 'itemsContainer' not found.");
-    return;
-  }
+  items.forEach(item => {
+    const dropdownItem = document.createElement('div');
+    dropdownItem.className = 'dropdown-item';
+    dropdownItem.dataset.value = item.shortName;
 
-  // Clear existing content
-  container.innerHTML = "";
-
-  // Loop through each item and render its image and name
-  items.forEach((item) => {
-    const itemElement = document.createElement("div");
-    itemElement.style.margin = "10px";
-
-    // Create image element
-    const imageElement = document.createElement("img");
-    imageElement.src = getImageBasedOnCondition(item);
-    imageElement.alt = item.displayName;
-    imageElement.width = 100;
-    imageElement.height = 100;
-
-    // Create name label
-    const labelElement = document.createElement("p");
-    labelElement.textContent = item.displayName;
-
-    // Append image and label to the item element
-    itemElement.appendChild(imageElement);
-    itemElement.appendChild(labelElement);
-
-    // Append item element to the container
-    container.appendChild(itemElement);
+    // Set image and name dynamically
+    dropdownItem.innerHTML = `
+      <img src="${getImageSource(item)}" alt="${item.displayName}" width="50" height="50">
+      ${item.displayName}
+    `;
+    itemDropdown.appendChild(dropdownItem);
   });
-}
+};
 
-// Run the render function after DOM content is loaded
-document.addEventListener("DOMContentLoaded", function () {
-  renderItems();
-});
+// Call the function to build the dropdown when the script is loaded
+document.addEventListener('DOMContentLoaded', buildDropdown);
