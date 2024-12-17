@@ -37,10 +37,7 @@ const buildDropdown = () => {
     dropdownItem.innerHTML = `
       <img src="${imageUrl}" alt="${item.displayName}">
       ${item.displayName}
-      <label class="switch">
-        <input type="checkbox" ${item.showImage ? 'checked' : ''} onchange="toggleImage(${items.indexOf(item)})">
-        <span class="slider"></span>
-      </label>
+     
     `;
     itemDropdown.appendChild(dropdownItem);
   });
