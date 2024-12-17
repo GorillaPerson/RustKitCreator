@@ -6,6 +6,27 @@
   <title>Wax Kit Generator</title>
   <link rel="icon" href="https://gorillaperson.github.io/RustKitCreator/images/Rust-Logo.png" type="image/png"> 
   <style>
+        .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .button {
+      padding: 10px 20px;
+      background-color: #4466aa;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .button:hover {
+      background-color: #5588cc;
+    }
+
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
@@ -192,6 +213,11 @@
     <h2>Command List</h2>
     <p id="emptyMessage">No commands added yet.</p>
   </div>
+  <div class="button-container">
+    <button class="button" id="aboutBtn">About</button>
+    <button class="button" id="docsBtn">Docs</button>
+  </div>
+
 
   <button class="copy-all" id="copyAllBtn">Copy All Commands</button>
 
@@ -327,12 +353,20 @@
       }
     });
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.dropdown')) {
-        itemDropdown.style.display = 'none';
-      }
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('.dropdown')) {
+            itemDropdown.style.display = 'none';
+          }
+        });
+        document.getElementById('aboutBtn').addEventListener('click', () => {
+      window.location.href = 'https://your-about-url.com'; // Replace with your About page URL
     });
+    
+    document.getElementById('docsBtn').addEventListener('click', () => {
+      window.location.href = 'https://your-docs-url.com'; // Replace with your Docs page URL
+    });
+
   </script>
 </body>
 </html>
