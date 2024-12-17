@@ -1,3 +1,4 @@
+const items = [
 { shortName: "abovegroundpool", displayName: "Above Ground Pool",showImage: true },
 { shortName: "ammo.grenadelauncher.buckshot", displayName: "40mm Shotgun Round",showImage: true },
 { shortName: "ammo.grenadelauncher.he", displayName: "40mm HE Grenade",showImage: true },
@@ -716,3 +717,43 @@
 { shortName: "xmasdoorwreath", displayName: "Christmas Door Wreath",showImage: true },
 { shortName: "xylophone", displayName: "Xylobone",showImage: true },
 { shortName: "yellow.berry", displayName: "Yellow Berry",showImage: true },
+
+]; 
+console.log(items);
+
+// Function to get a random static image URL (you can adjust the logic as per your static image choices)
+const getRandomStaticImage = () => {
+  const staticImages = [
+    'https://via.placeholder.com/150?text=Static+Image+1',
+    'https://via.placeholder.com/150?text=Static+Image+2',
+    'https://via.placeholder.com/150?text=Static+Image+3'
+  ];
+  const randomIndex = Math.floor(Math.random() * staticImages.length);
+  return staticImages[randomIndex];
+};
+
+// Dynamically build the dropdown list
+const buildDropdown = () => {
+  const itemDropdown = document.getElementById('itemDropdown');
+  itemDropdown.innerHTML = ''; // Clear previous items
+
+  items.forEach(item => {
+    const dropdownItem = document.createElement('div');
+    dropdownItem.className = 'dropdown-item';
+    dropdownItem.dataset.value = item.shortName;
+
+    // Check if the item has the showImage flag set to true, then show either dynamic or static image
+    const imageUrl = item.showImage
+      ? `https://raw.githubusercontent.com/GorillaPerson/Rust-items-images/refs/heads/main/items/${item.shortName}.png`
+      : getRandomStaticImage();
+
+    dropdownItem.innerHTML = `
+      <img src="${imageUrl}" alt="${item.displayName}">
+      ${item.displayName}
+    `;
+    itemDropdown.appendChild(dropdownItem);
+  });
+};
+
+// Call the function to build the dropdown when the script is loaded
+document.addEventListener('DOMContentLoaded', buildDropdown);
