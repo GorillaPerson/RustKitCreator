@@ -733,7 +733,7 @@ const buildDropdown = () => {
     dropdownItem.className = 'dropdown-item';
     dropdownItem.dataset.value = item.shortName;
     dropdownItem.innerHTML = `
-      <img src="https://wiki.rustclash.com/img/items180/${item.shortName}.png" alt="${item.displayName}">
+      <img src="https://raw.githubusercontent.com/GorillaPerson/Rust-items-images/refs/heads/main/items/${item.shortName}.png" alt="${item.displayName}">
       ${item.displayName}
     `;
     itemDropdown.appendChild(dropdownItem);
