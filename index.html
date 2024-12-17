@@ -245,9 +245,21 @@
         commandItem.remove();
         showEmptyMessage();
       });
+      const copyRemoveBtn = document.createElement('button');
+      copyRemoveBtn.textContent = 'Copy & Remove';
+      copyRemoveBtn.className = 'copy-remove';
+      copyRemoveBtn.style.backgroundColor = '#f39c12';
+      copyRemoveBtn.style.color = 'white';
+      copyRemoveBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(command);
+        alert('Command copied to clipboard!');
+        commandItem.remove();
+        showEmptyMessage();
+      });
 
       actions.appendChild(copyBtn);
       actions.appendChild(removeBtn);
+      actions.appendChild(copyRemoveBtn);
       commandItem.appendChild(itemImage);
       commandItem.appendChild(commandText);
       commandItem.appendChild(actions);
